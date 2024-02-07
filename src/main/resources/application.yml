@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+    url: ${DB_URL}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 346846270401-7j2ld0fm4its8vr9o64bsf7m72hookkj.apps.googleusercontent.com
+            client-secret: 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
+
+          github:
+            client-id: d131a628a93aa9fd48ea
+            client-secret: 7ebc1d7cfbd6292873d4ac2da3dcbf121ca4adc9
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        web:DEBUG:
+#        security:DEBUG:

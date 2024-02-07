@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Security</title>
+</head>
+<body>
+<h1>Welcome to Security Demo App</h1>
+<p th:text = "'authenticated user:'+ ${#authentication.getPrincipal()}"></p>
+<div>
+    <button onClick="logout()" class="btn btn-primary">Logout</button>
+</div>
+<script type="text/javascript">
+    var logout = function() {
+        $.post("/logout", function() {
+
+        })
+        return true;
+    }
+</script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
