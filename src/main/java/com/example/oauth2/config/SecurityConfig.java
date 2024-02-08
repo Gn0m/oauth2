@@ -5,7 +5,6 @@ import com.example.oauth2.enums.Role;
 import com.example.oauth2.repository.UserRepository;
 import com.example.oauth2.service.PasswordGeneratorService;
 import com.example.oauth2.service.UserAttemptsService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -43,8 +41,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/user/create", "/login", "/css/**",
-                                        "/js/**", "/images/**").permitAll()
+                                        "/js/**", "/images/**", "/error").permitAll()
                                 .requestMatchers("/user/delete/**").hasAuthority("ADMIN")
+                                .requestMatchers("/api/v1/home/admin").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE).hasAnyAuthority("ADMIN")
                                 .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login")
@@ -54,7 +53,6 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userAuthoritiesMapper(userAuthoritiesMapper())))
-                .logout(l->l.logoutSuccessUrl("/custom-logout").permitAll())
                 .build();
     }
 

@@ -22,12 +22,12 @@ spring:
       client:
         registration:
           google:
-            client-id: 346846270401-7j2ld0fm4its8vr9o64bsf7m72hookkj.apps.googleusercontent.com
-            client-secret: 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
+            client-id: client-id
+            client-secret: client-secret
 
           github:
-            client-id: d131a628a93aa9fd48ea
-            client-secret: 7ebc1d7cfbd6292873d4ac2da3dcbf121ca4adc9
+            client-id: client-id
+            client-secret: client-secret
 
 #logging:
 #  level:

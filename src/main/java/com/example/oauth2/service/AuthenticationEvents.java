@@ -47,8 +47,17 @@ public class AuthenticationEvents {
         attemptsService.updateFailAttempts(email);
 
     }
+
     @EventListener
-    public void onLogout(LogoutSuccessEvent logoutSuccessEvent){
-        System.out.println(logoutSuccessEvent.getAuthentication().getPrincipal());
+    public void onLogout(LogoutSuccessEvent logoutSuccessEvent) {
+        if (logoutSuccessEvent.getAuthentication().getPrincipal() instanceof DefaultOAuth2User oAuth2UserAuthority) {
+            Map<String, Object> userAttributes = oAuth2UserAuthority.getAttributes();
+            String email = (String) userAttributes.get("email");
+            log.info("User " + email + " logout, time: " + new Date());
+        } else {
+            CustomUserDetails customUserDetails = (CustomUserDetails) logoutSuccessEvent.getAuthentication().getPrincipal();
+            String email = customUserDetails.getUsername();
+            log.info("User " + email + " logout, time: " + new Date());
+        }
     }
 }

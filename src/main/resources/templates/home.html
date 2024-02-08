@@ -12,10 +12,7 @@
 </div>
 <script type="text/javascript">
     var logout = function() {
-        $.post("/logout", function() {
-
-        })
-        return true;
+       window.location.href="/logout"
     }
 </script>
 <script th:src="@{/js/jquery.min.js}"></script>
