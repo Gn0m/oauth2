@@ -29,9 +29,9 @@ spring:
             client-id: client-id
             client-secret: client-secret
 
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        web:DEBUG:
-#        security:DEBUG:
+logging:
+  level:
+    org:
+      springframework:
+        web:TRACE:
+        security:TRACE:

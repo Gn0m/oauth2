@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
@@ -18,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -58,7 +60,9 @@ public class SecurityConfig {
 
 
     private GrantedAuthoritiesMapper userAuthoritiesMapper() {
+        String password = passwordgenerator.generatePassword();
         return authorities -> {
+            Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             authorities.forEach(authority -> {
                 if (authority instanceof OAuth2UserAuthority oAuth2UserAuthority) {
                     Map<String, Object> userAttributes = oAuth2UserAuthority.getAttributes();
@@ -70,18 +74,19 @@ public class SecurityConfig {
                                 .lastName("")
                                 .accountNonLocked(true)
                                 .password(passwordEncoder.encode(
-                                        passwordgenerator.generatePassword()))
+                                        password))
                                 .roles(new HashSet<>())
                                 .build();
                         createUser.getRoles().add(Role.USER);
+                        userRepository.save(createUser);
+                        attemptsService.create(email);
                         return createUser;
                     });
-                    userRepository.save(user);
-                    attemptsService.create(email);
+                    grantedAuthorities.addAll(user.getRoles());
                     attemptsService.resetFailAttempts(email);
                 }
             });
-            return authorities;
+            return grantedAuthorities;
         };
     }
 }
